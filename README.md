@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://telegra.ph/file/da26403986427303c27e2.png" alt="Astral Cloud Logo" width="200">
+  <img src="https://gustavozs.ovh/assets/Astralvioleta.png" alt="Astral Cloud Logo" width="200">
 </p>
 
 <h1 align="center">🌌 Astral Cloud - Auto Installer (Pterodactyl + Wings)</h1>
