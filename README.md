@@ -23,7 +23,7 @@ Nosso instalador foi reescrito do zero para detectar e adaptar-se a diversas dis
 
 | Distribuição | Versões Suportadas | Status | Observações |
 | :--- | :---: | :---: | :--- |
-| **Ubuntu** | `22.04 LTS`, `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR aplicada automaticamente. |
+| **Ubuntu** | `22.04 LTS` até `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR aplicada automaticamente. |
 | **Debian** | `11 (Bullseye)`, `12 (Bookworm)` | 🟢 Excelente | Repositórios otimizados para `ftp.br.debian.org`. |
 | **Rocky Linux** | `8.x`, `9.x` | 🔵 Estável | Repositórios EPEL e Remi configurados nativamente. |
 | **AlmaLinux** | `8.x`, `9.x` | 🔵 Estável | Repositórios EPEL e Remi configurados nativamente. |
@@ -36,7 +36,12 @@ Nosso instalador foi reescrito do zero para detectar e adaptar-se a diversas dis
 
 ## ⚡ Instalação Rápida (One-Click)
 
-Acesse seu servidor via SSH com o usuário `root` e cole o comando abaixo. O script fará o resto.
+Acesse seu servidor via SSH com o usuário `root`. **Escolha o comando correspondente ao seu Sistema Operacional** e cole no terminal:
 
+> [!IMPORTANT]
+> **Certificados SSL (HTTPS):** Se você for instalar com SSL (Recomendado), os domínios do Painel e do Node **já devem estar apontados (DNS Tipo A)** para o IP do seu servidor antes de executar o script.
+
+### 🟠 Para Ubuntu (22.04 até 24.04)
+O Ubuntu geralmente já possui as ferramentas básicas necessárias. Basta rodar o comando abaixo:
 ```bash
-curl -sSL "[https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=](https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=)\$RANDOM" | sudo bash
+curl -sSL [https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh) | sudo bash
