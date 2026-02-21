@@ -26,14 +26,15 @@ echo -e "${CYAN}Precisamos de alguns dados para configurar tudo automaticamente:
 echo -e "${YELLOW}ATENÇÃO: Os domínios já devem estar apontados (DNS) para o IP desta máquina!${NC}"
 echo ""
 
-read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN
-read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL
+# CORREÇÃO: Adicionado < /dev/tty para forçar a leitura do teclado mesmo usando curl | bash
+read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN < /dev/tty
+read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL < /dev/tty
 
-read -p "Qual o domínio do NODE/WINGS? (ex: node.dominio.com.br): " NODE_FQDN
-read -p "Deseja instalar SSL (HTTPS) no NODE? [y/n]: " NODE_USE_SSL
+read -p "Qual o domínio do NODE/WINGS? (ex: node.dominio.com.br): " NODE_FQDN < /dev/tty
+read -p "Deseja instalar SSL (HTTPS) no NODE? [y/n]: " NODE_USE_SSL < /dev/tty
 
-read -p "Qual o seu e-mail de administrador?: " ADMIN_EMAIL
-read -s -p "Crie uma senha para o Banco de Dados e para o Admin: " PASSWORD
+read -p "Qual o seu e-mail de administrador?: " ADMIN_EMAIL < /dev/tty
+read -s -p "Crie uma senha para o Banco de Dados e para o Admin: " PASSWORD < /dev/tty
 echo ""
 echo ""
 
@@ -245,6 +246,11 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload && systemctl enable wings
+
+# Limpeza de cache para economizar espaço
+echo -e "${CYAN}[INFO] Limpando arquivos temporários...${NC}"
+apt-get autoremove -y > /dev/null 2>&1
+apt-get clean > /dev/null 2>&1
 
 echo -e "${GREEN}======================================================${NC}"
 echo -e "${CYAN} INSTALAÇÃO ASTRAL CLOUD CONCLUÍDA COM SUCESSO!${NC}"
