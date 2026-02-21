@@ -19,26 +19,27 @@
 
 ## 💻 Sistemas Operacionais Suportados
 
-Nosso instalador foi construído do zero para rodar liso nas principais distribuições usadas em servidores de hospedagem. Testado e homologado para:
+Nosso instalador foi construído do zero para rodar perfeitamente nas distribuições Linux mais utilizadas em hosting. Testado e homologado para:
 
 | Distribuição | Versões Suportadas | Status | Observações |
 | :--- | :---: | :---: | :--- |
-| **Ubuntu** | `22.04 LTS` até `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR aplicada automaticamente. |
-| **Debian** | `11` até `13` | 🟢 Excelente | Repositórios otimizados e instalação prévia de dependências. |
+| **Ubuntu** | `22.04 LTS` até `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR automática. |
+| **Debian** | `11`, `12` e `13` | 🟢 Excelente | Repositórios otimizados e suporte nativo. |
 
 > [!WARNING]
-> **Atenção à Virtualização:** O Pterodactyl Wings utiliza **Docker**. Por isso, seu servidor VPS **deve** usar virtualização **KVM** ou ser um servidor Dedicado. Virtualizações antigas como OpenVZ ou LXC não são suportadas.
+> **Atenção à Virtualização:** O Pterodactyl Wings utiliza **Docker**. Por isso, seu servidor VPS **DEVE** usar virtualização **KVM** ou ser um servidor Dedicado. Virtualizações antigas como OpenVZ ou LXC não são suportadas.
 
 ---
 
 ## ⚡ Instalação Rápida (One-Click)
 
-Acesse seu servidor via SSH com o usuário `root`. **Escolha o comando correspondente ao seu Sistema Operacional** e cole no terminal:
+Acesse seu servidor via SSH com o usuário `root`. Copie o comando abaixo e cole no terminal:
 
 > [!IMPORTANT]
-> **Certificados SSL (HTTPS):** Se você for instalar com SSL (Recomendado), os domínios do Painel e do Node **já devem estar apontados (DNS Tipo A)** para o IP do seu servidor antes de executar o script.
+> **Certificados SSL (HTTPS):** Para instalar com SSL (Recomendado), seus domínios (Painel e Node) **já devem estar apontados (DNS Tipo A)** para o IP do seu servidor antes de executar o script.
 
-### 🟠 Para Ubuntu (22.04 até 24.04) & Debian (11 até o 13)
-O Ubuntu e o Debian geralmente já possuem as ferramentas básicas prontas. Basta rodar o comando abaixo:
+### 🟠 Para Ubuntu (22.04 até 24.04) & 🔴 Debian (11 até 13)
+Este comando instala as dependências necessárias e executa o instalador da **Astral Cloud**:
+
 ```bash
-curl -sSL [https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh) | sudo bash
+apt update -y && apt install curl -y && curl -sSL [https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh) | sudo bash
