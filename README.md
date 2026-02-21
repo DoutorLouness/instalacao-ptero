@@ -42,4 +42,4 @@ Acesse seu servidor via SSH com o usuário `root`. Copie o comando abaixo e cole
 Este comando instala as dependências necessárias e executa o instalador da **Astral Cloud**:
 
 ```bash
-apt update -y && apt install curl -y && curl -sSL [https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh) | sudo bash
+curl -sSL "https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=$RANDOM" | sudo bash
