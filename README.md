@@ -1,45 +1,88 @@
 <p align="center">
-  <img src="https://gustavozs.ovh/assets/Astralvioleta.png" alt="Astral Cloud Logo" width="200">
+  <img src="https://gustavozs.ovh/assets/Astralvioleta.png" width="180" alt="Astral Cloud Logo">
 </p>
 
-<h1 align="center">🌌 Astral Cloud - Instalador automático (Pterodactyl + Wings)</h1>
+<h1 align="center">🌌 Astral Cloud — Instalador automático (Painel + Wings)</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.1.0-6e54ff?style=for-the-badge" alt="Version">
-  <img src="https://img.shields.io/badge/Status-Stable-2ea44f?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/License-MIT-E9430F?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Version-2.1.0-6e54ff?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Status-Stable-2ea44f?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Linux-Ubuntu%20%7C%20Debian-1f6feb?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-MIT-E9430F?style=for-the-badge">
 </p>
 
 <p align="center">
-  <strong>A forma definitiva e à prova de falhas para instalar sua infraestrutura de hospedagem.</strong><br>
-  Script One-Click oficial da Astral Cloud, otimizado para servidores KVM e focado no público brasileiro.
+  Instale sua infraestrutura de hospedagem em minutos.<br>
+  Script automático para configurar <b>Pterodactyl Panel + Wings</b> com Docker, SSL e otimizações prontas para produção.
 </p>
 
 ---
 
-## 💻 Sistemas Operacionais Suportados
+## 🚀 Sobre
 
-Nosso instalador foi construído do zero para rodar perfeitamente nas distribuições Linux mais utilizadas em hosting. Testado e homologado para:
+O **Astral Cloud Installer** foi criado para simplificar a instalação do **:contentReference[oaicite:0]{index=0}** e do **:contentReference[oaicite:1]{index=1}**.
 
-| Distribuição | Versões Suportadas | Status | Observações |
-| :--- | :---: | :---: | :--- |
-| **Ubuntu** | `22.04 LTS` até `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR automática. |
-| **Debian** | `11`, `12` e `13` | 🟢 Excelente | Repositórios otimizados e suporte nativo. |
+Nada de tutoriais enormes ou configs manuais.
 
-> [!WARNING]
-> **Atenção à Virtualização:** O Pterodactyl Wings utiliza **Docker**. Por isso, seu servidor VPS **DEVE** usar virtualização **KVM** ou ser um servidor Dedicado. Virtualizações antigas como OpenVZ ou LXC não são suportadas.
+Você executa **um comando** e o servidor sai funcionando.
+
+Ideal para:
+
+- Hospedagem de Minecraft
+- FiveM
+- Bots Discord
+- VPS gamers
+- Infraestrutura própria
 
 ---
 
-## ⚡ Instalação Rápida (One-Click)
+## ⚙️ O que o script faz automaticamente
 
-Acesse seu servidor via SSH com o usuário `root`. Copie o comando abaixo e cole no terminal:
+✔ Instala todas as dependências  
+✔ Configura Docker  
+✔ Instala Painel  
+✔ Instala Wings  
+✔ Configura banco de dados  
+✔ Ajusta firewall  
+✔ Ativa serviços no boot  
+✔ Emite SSL (Let's Encrypt)  
+✔ Otimiza mirrors brasileiros  
+✔ Ambiente pronto para produção  
 
-> [!IMPORTANT]
-> **Certificados SSL (HTTPS):** Para instalar com SSL (Recomendado), seus domínios (Painel e Node) **já devem estar apontados (DNS Tipo A)** para o IP do seu servidor antes de executar o script.
+---
 
-### 🟠 Para Ubuntu (22.04 até 24.04) & 🔴 Debian (11 até 13)
-Este comando instala as dependências necessárias e executa o instalador da **Astral Cloud**:
+## 💻 Sistemas suportados
+
+| Sistema | Versões | Status |
+|--------|----------|-----------|
+| **:contentReference[oaicite:2]{index=2}** | 22.04 → 24.04 LTS | 🟢 Recomendado |
+| **:contentReference[oaicite:3]{index=3}** | 11, 12, 13 | 🟢 Estável |
+
+---
+
+## ⚠️ Requisitos importantes
+
+Antes de instalar:
+
+### Virtualização
+O Wings utiliza **Docker**, então seu servidor precisa ser:
+
+- KVM ✅
+- Dedicado ✅
+- OpenVZ ❌
+- LXC ❌
+
+### Domínio (para SSL)
+Se for usar HTTPS:
+
+- Aponte o domínio para o IP do servidor (DNS tipo A)
+- Aguarde a propagação
+
+---
+
+## ⚡ Instalação rápida (One-Click)
+
+Conecte via SSH como **root** e execute:
 
 ```bash
-curl -sSL "https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=$RANDOM" | sudo bash
+curl -sSL "https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=$RANDOM" | bash
