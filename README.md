@@ -2,7 +2,7 @@
   <img src="https://gustavozs.ovh/assets/Astralvioleta.png" alt="Astral Cloud Logo" width="200">
 </p>
 
-<h1 align="center">🌌 Astral Cloud - Auto Installer (Pterodactyl + Wings)</h1>
+<h1 align="center">🌌 Astral Cloud - Instalador automático (Pterodactyl + Wings)</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-2.1.0-6e54ff?style=for-the-badge" alt="Version">
