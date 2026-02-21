@@ -26,6 +26,7 @@ echo -e "${CYAN}Precisamos de alguns dados para configurar tudo automaticamente:
 echo -e "${YELLOW}ATENÇÃO: Os domínios já devem estar apontados (DNS) para o IP desta máquina!${NC}"
 echo ""
 
+# Lendo direto do teclado físico para não pular
 read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN < /dev/tty
 read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL < /dev/tty
 
@@ -127,18 +128,46 @@ curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/latest/downl
 tar -xzvf panel.tar.gz && chmod -R 755 storage/* bootstrap/cache/
 cp .env.example .env
 
-# Instalar dependências do PHP (Com no-interaction para não travar)
+# Instalar dependências do PHP com no-interaction
 export COMPOSER_ALLOW_SUPERUSER=1
 composer install --no-dev --optimize-autoloader --no-interaction
 
-# Configurar o .env (Blindado contra perguntas)
+# --- BLINDAGEM MÁXIMA DO ARTISAN ---
 php artisan key:generate --force --no-interaction
-php artisan p:environment:setup --author="${ADMIN_EMAIL}" --url="${PROTOCOL}://${FQDN}" --timezone="America/Sao_Paulo" --cache="redis" --session="redis" --queue="redis" --redis-host="127.0.0.1" --redis-pass="" --redis-port="6379" --telemetry=0 --no-interaction
-php artisan p:environment:database --host="127.0.0.1" --port="3306" --database="panel" --username="pterodactyl" --password="${PASSWORD}" --no-interaction
 
-# Migrar banco de dados e criar usuário admin
+php artisan p:environment:setup \
+  --author="${ADMIN_EMAIL}" \
+  --url="${PROTOCOL}://${FQDN}" \
+  --timezone="America/Sao_Paulo" \
+  --cache="redis" \
+  --session="redis" \
+  --queue="redis" \
+  --redis-host="127.0.0.1" \
+  --redis-pass="null" \
+  --redis-port="6379" \
+  --settings-ui=true \
+  --telemetry=false \
+  --no-interaction
+
+php artisan p:environment:database \
+  --host="127.0.0.1" \
+  --port="3306" \
+  --database="panel" \
+  --username="pterodactyl" \
+  --password="${PASSWORD}" \
+  --no-interaction
+
 php artisan migrate --seed --force --no-interaction
-php artisan p:user:make --email="${ADMIN_EMAIL}" --admin=1 --password="${PASSWORD}" --name-first="Admin" --name-last="Astral" --username="admin" --no-interaction
+
+php artisan p:user:make \
+  --email="${ADMIN_EMAIL}" \
+  --admin=1 \
+  --password="${PASSWORD}" \
+  --name-first="Admin" \
+  --name-last="Astral" \
+  --username="admin" \
+  --no-interaction
+# -----------------------------------
 
 chown -R $WEB_USER:$WEB_USER /var/www/pterodactyl/*
 
