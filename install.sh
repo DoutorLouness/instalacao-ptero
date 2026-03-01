@@ -2,6 +2,9 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Força o script a ler o seu teclado, ignorando o pipe do curl
+exec < /dev/tty
+
 # --- CORES ---
 CYAN='\033[0;36m'
 GREEN='\033[1;32m'
@@ -37,17 +40,23 @@ install_all() {
     echo -e "${CYAN}=== INSTALAÇÃO: PTERODACTYL + WINGS ===${NC}"
     echo -e "${YELLOW}ATENÇÃO: Os domínios já devem estar apontados (DNS) para o IP desta máquina!${NC}\n"
 
-    read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN < /dev/tty
-    read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL < /dev/tty
-
-    read -p "Qual o domínio do NODE/WINGS? (ex: node.dominio.com.br): " NODE_FQDN < /dev/tty
-    read -p "Deseja instalar SSL (HTTPS) no NODE? [y/n]: " NODE_USE_SSL < /dev/tty
-
-    read -p "Qual o seu e-mail de administrador?: " ADMIN_EMAIL < /dev/tty
+    read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN
+    read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL
+    read -p "Qual o domínio do NODE/WINGS? (ex: node.dominio.com.br): " NODE_FQDN
+    read -p "Deseja instalar SSL (HTTPS) no NODE? [y/n]: " NODE_USE_SSL
+    read -p "Qual o seu e-mail de administrador?: " ADMIN_EMAIL
     echo -e "${YELLOW}(A senha deve ter no mínimo 8 caracteres, com letras e números)${NC}"
-    read -s -p "Crie uma senha para o Banco de Dados e para o Admin: " PASSWORD < /dev/tty
+    read -s -p "Crie uma senha para o Banco de Dados e para o Admin: " PASSWORD
     echo ""
     echo ""
+
+    # Limpa possíveis formatações invisíveis do Windows (CRLF)
+    FQDN=$(echo "$FQDN" | tr -d '\r')
+    USE_SSL=$(echo "$USE_SSL" | tr -d '\r')
+    NODE_FQDN=$(echo "$NODE_FQDN" | tr -d '\r')
+    NODE_USE_SSL=$(echo "$NODE_USE_SSL" | tr -d '\r')
+    ADMIN_EMAIL=$(echo "$ADMIN_EMAIL" | tr -d '\r')
+    PASSWORD=$(echo "$PASSWORD" | tr -d '\r')
 
     if [[ "$USE_SSL" =~ ^[Yy]$ ]]; then
         PROTOCOL="https"
@@ -392,8 +401,9 @@ show_menu() {
     echo -e " 5) ${RED}Sair do Script${NC}"
     echo -e "${GREEN}======================================================${NC}"
     
-    # === CORREÇÃO: Lendo do /dev/tty para funcionar no 'curl | bash' ===
-    read -p "Escolha uma opção [1-5]: " opcao < /dev/tty
+    # Agora a variável opcao sempre será limpa, independente da quebra de linha do GitHub
+    read -p "Escolha uma opção [1-5]: " opcao
+    opcao=$(echo "$opcao" | tr -d '\r')
     
     case $opcao in
         1)
