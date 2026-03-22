@@ -2,6 +2,37 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+# --- 0. CHECAGEM DE ROOT E SISTEMA ---
+# Checar Root logo de cara
+if [ "$EUID" -ne 0 ]; then
+    echo -e "\033[1;31m[ERRO] Execute como root (sudo su).\033[0m"
+    exit 1
+fi
+
+# Identificar SO
+. /etc/os-release
+OS=$ID
+VER=$VERSION_ID
+
+# === OTIMIZAÇÃO DE REPOSITÓRIOS PARA O BRASIL ANTES DE TUDO ===
+if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
+    if [ "$OS" == "ubuntu" ]; then
+        if [ -f /etc/apt/sources.list ]; then
+            sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list
+        fi
+        if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
+            sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list.d/ubuntu.sources
+        fi
+    elif [ "$OS" == "debian" ]; then
+        if [ -f /etc/apt/sources.list ]; then
+            sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list
+        fi
+        if [ -f /etc/apt/sources.list.d/debian.sources ]; then
+            sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list.d/debian.sources
+        fi
+    fi
+fi
+
 # --- CORES ---
 CYAN='\033[0;36m'
 GREEN='\033[1;32m'
@@ -11,7 +42,7 @@ NC='\033[0m'
 
 clear
 echo -e "${CYAN}"
-echo "    ___       __           __  ________                __ "
+echo "    ___       __            __  ________                __ "
 echo "   / _ | ___ / /________ _/ / / ___/ /___  __ _____   / / "
 echo "  / __ |(_-</ __/ __/ _ \`/ / / /__/ / __ \/ // / _ \ /_/  "
 echo " /_/ |_/___/\__/_/  \_,_/_/  \___/_/\___/\_,_/_//_/ (_)   "
@@ -19,6 +50,10 @@ echo -e "${NC}"
 echo -e "${GREEN}======================================================${NC}"
 echo -e "${YELLOW} Instalador Automático - Astral Cloud${NC}"
 echo -e "${GREEN}======================================================${NC}"
+echo ""
+
+echo -e "${GREEN}[INFO] Sistema identificado: $PRETTY_NAME...${NC}"
+echo -e "${GREEN}[INFO] Repositórios otimizados para o Brasil!${NC}"
 echo ""
 
 # --- 1. COLETA DE DADOS INICIAIS ---
@@ -44,18 +79,6 @@ else
     PROTOCOL="http"
 fi
 
-# Checar Root
-if [ "$EUID" -ne 0 ]; then
-    echo -e "${RED}[ERRO] Execute como root (sudo su).${NC}"
-    exit 1
-fi
-
-# Identificar SO
-. /etc/os-release
-OS=$ID
-VER=$VERSION_ID
-echo -e "${GREEN}[INFO] Iniciando instalação silenciosa para $PRETTY_NAME...${NC}"
-
 # --- TRATAMENTO SELINUX (ROCKY/ALMALINUX/RHEL) ---
 if [[ "$OS" =~ ^(rocky|almalinux|rhel)$ ]]; then
     echo -e "${YELLOW}[INFO] Configurando SELinux para Permissive...${NC}"
@@ -68,23 +91,6 @@ echo -e "${YELLOW}[1/8] Configurando repositórios e instalando pacotes base...$
 
 if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
     
-    # === OTIMIZAÇÃO DE REPOSITÓRIOS PARA O BRASIL ===
-    if [ "$OS" == "ubuntu" ]; then
-        if [ -f /etc/apt/sources.list ]; then
-            sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list
-        fi
-        if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
-            sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list.d/ubuntu.sources
-        fi
-    elif [ "$OS" == "debian" ]; then
-        if [ -f /etc/apt/sources.list ]; then
-            sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list
-        fi
-        if [ -f /etc/apt/sources.list.d/debian.sources ]; then
-            sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list.d/debian.sources
-        fi
-    fi
-
     apt-get update -y -qq
     apt-get install -y -qq curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx > /dev/null
     
